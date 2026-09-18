@@ -1,0 +1,6 @@
+@Olimpeadas.Original_HostAddress = http://localhost:5278
+
+GET {{Olimpeadas.Original_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
