@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,14 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Olimpeadas.Aplication\Olimpeadas.Aplication.csproj" />
     <ProjectReference Include="..\Olimpeadas.Domain\Olimpeadas.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Authentication\" />
-    <Folder Include="Data\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
