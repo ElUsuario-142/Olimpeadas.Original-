@@ -10,5 +10,6 @@ namespace Olimpeadas.Aplication.DTOs.Alerta
         public decimal Longitud { get; set; }
         public DateTime Fecha { get; set; }
         public EstadoAlerta Estado { get; set; }
+        public List<int> UsuariosNotificadosIds { get; set; } = new();
     }
 }
