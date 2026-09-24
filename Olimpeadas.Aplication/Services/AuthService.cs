@@ -1,9 +1,10 @@
+
 using Olimpeadas.Aplication.DTOs.Auth;
 using Olimpeadas.Aplication.DTOs.Usuario;
 using Olimpeadas.Aplication.Interfaces;
 using Olimpeadas.Domain.Entities;
 using Olimpeadas.Domain.Interfaces;
-
+using Olimpeadas.Domain.Enums;
 namespace Olimpeadas.Aplication.Services
 {
     public class AuthService : IAuthService
@@ -80,7 +81,7 @@ namespace Olimpeadas.Aplication.Services
                 Telefono = registroDto.Telefono,
                 Email = registroDto.Email,
                 ContraseñaHash = passwordHash,
-                Rol = registroDto.Rol,
+                Rol = Rol.Ciudadano,
                 MunicipioId = registroDto.MunicipioId,
                 Activo = true
             };

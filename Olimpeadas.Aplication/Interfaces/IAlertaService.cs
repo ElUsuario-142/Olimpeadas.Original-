@@ -5,7 +5,7 @@ namespace Olimpeadas.Aplication.Interfaces
 {
     public interface IAlertaService
     {
-        Task<AlertaDTO> CrearAsync(CrearAlertaDTO dto);
+        Task<AlertaDTO> CrearAsync(CrearAlertaDTO dto, int usuarioId);
         Task<AlertaDTO?> GetByIdAsync(int id);
         Task<IEnumerable<AlertaDTO>> GetAllAsync();
         Task<IEnumerable<AlertaDTO>> GetByEstadoAsync(EstadoAlerta estado);

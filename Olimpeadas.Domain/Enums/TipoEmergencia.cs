@@ -7,8 +7,8 @@ namespace Olimpeadas.Domain.Enums
     public enum TipoEmergencia
     {
         Policia,
-        ambulancia,
-        bombero
+        Ambulancia,
+        Bombero
 
     }
 }

@@ -31,6 +31,11 @@ namespace Olimpeadas.Infraestructure
             services.AddScoped<IAlertaRepository, AlertaRepository>();
             services.AddScoped<IUsuarioAlertaRepository, UsuarioAlertaRepository>();
 
+            // Datos iniciales (municipios, categorías, contactos y admin). Se ejecuta desde Program.cs.
+            services.AddScoped<DbSeeder>();
+
+
+
             // Autenticación y Seguridad (BCrypt y JWT)
             services.AddSingleton<Olimpeadas.Aplication.Interfaces.IPasswordHasher, Authentication.BCryptPasswordHasher>();
             services.AddScoped<Olimpeadas.Aplication.Interfaces.IJwtGenerator, Authentication.JwtGenerator>();

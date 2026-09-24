@@ -10,13 +10,46 @@ namespace Olimpeadas.Aplication.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMunicipioRepository _municipioRepository;
+        private readonly IPasswordHasher _passwordHasher;
 
         public UsuarioService(
             IUsuarioRepository usuarioRepository,
-            IMunicipioRepository municipioRepository)
+            IMunicipioRepository municipioRepository,
+            IPasswordHasher passwordHasher)
         {
             _usuarioRepository = usuarioRepository;
             _municipioRepository = municipioRepository;
+            _passwordHasher = passwordHasher;
+        }
+        /* Alta hecha por un Admin: a diferencia del registro público, aca si se respeta el rol pedido.
+         Quién puede llamar a esto se controla en el controller ([Authorize(Roles = Admin)]).*/
+        public async Task<UsuarioDTO> CrearAsync(CrearUsuarioDTO dto)
+        {
+            if (await _usuarioRepository.GetByEmailAsync(dto.Email) != null)
+                throw new InvalidOperationException("El correo electrónico ya se encuentra registrado.");
+
+            if (await _usuarioRepository.GetByDNIAsync(dto.DNI) != null)
+                throw new InvalidOperationException("El DNI ya se encuentra registrado.");
+
+            var municipio = await _municipioRepository.GetByIdAsync(dto.MunicipioId)
+                ?? throw new KeyNotFoundException($"Municipio con ID {dto.MunicipioId} no encontrado.");
+
+            var usuario = new Usuario
+            {
+                Nombre = dto.Nombre,
+                Apellido = dto.Apellido,
+                DNI = dto.DNI,
+                Telefono = dto.Telefono,
+                Email = dto.Email,
+                ContraseñaHash = _passwordHasher.HashPassword(dto.Contraseña),
+                Rol = dto.Rol,
+                MunicipioId = municipio.Id,
+                Activo = true
+            };
+            await _usuarioRepository.AddAsync(usuario);
+            await _usuarioRepository.SaveChangesAsync();
+            usuario.Municipio = municipio; // Para que el DTO tenga el nombre del municipio
+            return MapToDTO(usuario);
         }
 
         public async Task<UsuarioDTO?> GetByIdAsync(int id)

@@ -22,10 +22,10 @@ namespace Olimpeadas.Aplication.Services
             _usuarioAlertaRepository = usuarioAlertaRepository;
         }
 
-        public async Task<AlertaDTO> CrearAsync(CrearAlertaDTO dto)
+        public async Task<AlertaDTO> CrearAsync(CrearAlertaDTO dto, int usuarioId)
         {
-            var usuario = await _usuarioRepository.GetByIdAsync(dto.UsuarioId)
-                ?? throw new KeyNotFoundException($"Usuario emisor con ID {dto.UsuarioId} no encontrado.");
+            var usuario = await _usuarioRepository.GetByIdAsync(usuarioId)
+                ?? throw new KeyNotFoundException($"Usuario emisor con ID {usuarioId} no encontrado.");
 
             if (!usuario.Activo)
                 throw new InvalidOperationException("El usuario se encuentra inactivo.");

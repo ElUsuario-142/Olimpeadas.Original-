@@ -31,10 +31,10 @@ namespace Olimpeadas.Aplication.Services
             _historialEstadoRepository = historialEstadoRepository;
         }
 
-        public async Task<ReporteDTO> CrearAsync(CrearReporteDTO dto)
+        public async Task<ReporteDTO> CrearAsync(CrearReporteDTO dto, int usuarioId)
         {
-            var usuario = await _usuarioRepository.GetByIdAsync(dto.UsuarioId)
-                ?? throw new KeyNotFoundException($"Usuario con ID {dto.UsuarioId} no encontrado.");
+            var usuario = await _usuarioRepository.GetByIdAsync(usuarioId)
+                ?? throw new KeyNotFoundException($"Usuario con ID {usuarioId} no encontrado.");
 
             if (!usuario.Activo)
                 throw new InvalidOperationException("El usuario se encuentra inactivo y no puede generar reportes.");
@@ -60,7 +60,7 @@ namespace Olimpeadas.Aplication.Services
 
             var reporte = new Reporte
             {
-                UsuarioId = dto.UsuarioId,
+                UsuarioId = usuarioId,
                 CategoriaId = dto.CategoriaId,
                 DireccionId = direccion.Id,
                 Titulo = dto.Titulo,
@@ -91,7 +91,7 @@ namespace Olimpeadas.Aplication.Services
             // Crear registro inicial en el historial de estados
             var historialInicial = new HistorialEstado
             {
-                UsuarioId = dto.UsuarioId,
+                UsuarioId = usuarioId,
                 ReporteId = reporte.Id,
                 EstadoAnterior = null,
                 EstadoNuevo = Estado.Pendiente,
@@ -148,7 +148,7 @@ namespace Olimpeadas.Aplication.Services
             return reportes.Select(MapToDTO);
         }
 
-        public async Task<ReporteDTO> AsignarEmpleadoAsync(int reporteId, AsignarEmpleadoDTO dto)
+        public async Task<ReporteDTO> AsignarEmpleadoAsync(int reporteId, AsignarEmpleadoDTO dto,int asignadorUsuarioId)
         {
             var reporte = await _reporteRepository.GetWithDetallesAsync(reporteId)
                 ?? throw new KeyNotFoundException($"Reporte con ID {reporteId} no encontrado.");
@@ -159,9 +159,7 @@ namespace Olimpeadas.Aplication.Services
             if (empleado.Rol != Rol.Empleado && empleado.Rol != Rol.Admin)
                 throw new InvalidOperationException("El usuario asignado debe tener rol de Empleado o Admin.");
 
-            var asignador = await _usuarioRepository.GetByIdAsync(dto.AsignadorUsuarioId)
-                ?? throw new KeyNotFoundException($"Usuario asignador con ID {dto.AsignadorUsuarioId} no encontrado.");
-
+            
             reporte.EmpleadoEncargadoId = empleado.Id;
             reporte.FechaActualizacion = DateTime.UtcNow;
 
@@ -170,7 +168,7 @@ namespace Olimpeadas.Aplication.Services
             // Registro en historial
             var historial = new HistorialEstado
             {
-                UsuarioId = dto.AsignadorUsuarioId,
+                UsuarioId = asignadorUsuarioId,
                 ReporteId = reporte.Id,
                 EstadoAnterior = reporte.Estado,
                 EstadoNuevo = reporte.Estado,
@@ -185,13 +183,13 @@ namespace Olimpeadas.Aplication.Services
             return MapToDTO(actualizado ?? reporte);
         }
 
-        public async Task<ReporteDTO> CambiarEstadoAsync(int reporteId, CambiarEstadoReporteDTO dto)
+        public async Task<ReporteDTO> CambiarEstadoAsync(int reporteId, CambiarEstadoReporteDTO dto, int usuarioId)
         {
             var reporte = await _reporteRepository.GetWithDetallesAsync(reporteId)
                 ?? throw new KeyNotFoundException($"Reporte con ID {reporteId} no encontrado.");
 
-            var usuario = await _usuarioRepository.GetByIdAsync(dto.UsuarioId)
-                ?? throw new KeyNotFoundException($"Usuario con ID {dto.UsuarioId} no encontrado.");
+            var usuario = await _usuarioRepository.GetByIdAsync(usuarioId)
+                ?? throw new KeyNotFoundException($"Usuario con ID {usuarioId} no encontrado.");
 
             var estadoAnterior = reporte.Estado;
             reporte.Estado = dto.NuevoEstado;
@@ -201,7 +199,7 @@ namespace Olimpeadas.Aplication.Services
 
             var historial = new HistorialEstado
             {
-                UsuarioId = dto.UsuarioId,
+                UsuarioId = usuarioId,
                 ReporteId = reporte.Id,
                 EstadoAnterior = estadoAnterior,
                 EstadoNuevo = dto.NuevoEstado,

@@ -21,41 +21,16 @@ namespace Olimpeadas.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
         {
-            try
-            {
-                var response = await _authService.LoginAsync(loginDto);
-                return Ok(response);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Unauthorized(new { mensaje = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { mensaje = "Ocurrió un error inesperado.", detalle = ex.Message });
-            }
+            return Ok(await _authService.LoginAsync(loginDto));
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] CrearUsuarioDTO registroDto)
         {
-            try
-            {
-                var response = await _authService.RegisterAsync(registroDto);
-                return CreatedAtAction(nameof(Login), new { id = response.UsuarioId }, response);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { mensaje = "Ocurrió un error inesperado al registrar el usuario.", detalle = ex.Message });
-            }
+
+            var response = await _authService.RegisterAsync(registroDto);
+            return CreatedAtAction(nameof(ObtenerPerfilAutenticado), response);
+
         }
 
         [Authorize]

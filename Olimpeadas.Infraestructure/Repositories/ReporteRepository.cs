@@ -10,6 +10,15 @@ namespace Olimpeadas.Infraestructure.Repositories
     {
         public ReporteRepository(OlimpeadasDbContext context) : base(context) { }
 
+        private IQueryable<Reporte> ListadoBase() => _dbSet
+           .AsNoTracking()
+           .Include(r => r.Usuario)
+           .Include(r => r.Categoria)
+           .Include(r => r.Direccion)
+           .Include(r => r.EmpleadoEncargado)
+           .Include(r => r.Imagenes)
+           .OrderByDescending(r => r.FechaCreacion);
+
         public async Task<Reporte?> GetWithDetallesAsync(int id)
         {
             return await _dbSet
@@ -22,55 +31,35 @@ namespace Olimpeadas.Infraestructure.Repositories
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 
+
+        public override async Task<IEnumerable<Reporte>> GetAllAsync()
+        {
+            return await ListadoBase().ToListAsync();
+        }
+
         public async Task<IEnumerable<Reporte>> GetByUsuarioIdAsync(int usuarioId)
         {
-            return await _dbSet
-                .Include(r => r.Categoria)
-                .Include(r => r.Direccion)
-                .Where(r => r.UsuarioId == usuarioId)
-                .OrderByDescending(r => r.FechaCreacion)
-                .ToListAsync();
+            return await ListadoBase().Where(r => r.UsuarioId == usuarioId).ToListAsync();
         }
 
         public async Task<IEnumerable<Reporte>> GetByEstadoAsync(Estado estado)
         {
-            return await _dbSet
-                .Include(r => r.Usuario)
-                .Include(r => r.Categoria)
-                .Where(r => r.Estado == estado)
-                .OrderByDescending(r => r.FechaCreacion)
-                .ToListAsync();
+            return await ListadoBase().Where(r => r.Estado == estado).ToListAsync();
         }
 
         public async Task<IEnumerable<Reporte>> GetByCategoriaIdAsync(int categoriaId)
         {
-            return await _dbSet
-                .Include(r => r.Usuario)
-                .Where(r => r.CategoriaId == categoriaId)
-                .OrderByDescending(r => r.FechaCreacion)
-                .ToListAsync();
+            return await ListadoBase().Where(r => r.CategoriaId == categoriaId).ToListAsync();
         }
 
         public async Task<IEnumerable<Reporte>> GetByEmpleadoIdAsync(int empleadoId)
         {
-            return await _dbSet
-                .Include(r => r.Usuario)
-                .Include(r => r.Categoria)
-                .Include(r => r.Direccion)
-                .Where(r => r.EmpleadoEncargadoId == empleadoId)
-                .OrderByDescending(r => r.FechaCreacion)
-                .ToListAsync();
+            return await ListadoBase().Where(r => r.EmpleadoEncargadoId == empleadoId).ToListAsync();
         }
 
         public async Task<IEnumerable<Reporte>> GetSinAsignarAsync()
         {
-            return await _dbSet
-                .Include(r => r.Usuario)
-                .Include(r => r.Categoria)
-                .Include(r => r.Direccion)
-                .Where(r => r.EmpleadoEncargadoId == null)
-                .OrderByDescending(r => r.FechaCreacion)
-                .ToListAsync();
+            return await ListadoBase().Where(r => r.EmpleadoEncargadoId == null).ToListAsync();
         }
     }
 }
