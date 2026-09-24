@@ -4,6 +4,6 @@ namespace Olimpeadas.Aplication.DTOs.Alerta
 {
     public class ActualizarAlertaDTO
     {
-        public EstadoAlerta Estado { get; set; }
+        public required EstadoAlerta Estado { get; set; }
     }
 }
