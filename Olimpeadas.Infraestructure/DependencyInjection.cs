@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Olimpeadas.Domain.Interfaces;
 using Olimpeadas.Infraestructure.Data;
+using Olimpeadas.Infraestructure.Data.Migrations;
 using Olimpeadas.Infraestructure.Repositories;
 
 namespace Olimpeadas.Infraestructure

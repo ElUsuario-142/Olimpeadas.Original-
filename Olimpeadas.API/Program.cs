@@ -16,10 +16,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 // Configure PostgreSQL DbContext, Repositories, and Security (Infrastructure layer)
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-//builder.Services.AddScoped<DbSeeder>();-------
-builder.Services.AddScoped<Olimpeadas.Infraestructure.Data.Migrations.DbSeeder>();
-
-
 // Configure Application services (AuthService, etc.)
 builder.Services.AddApplicationServices();
 
@@ -70,7 +66,7 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var seeder = scope.ServiceProvider.GetRequiredService<Olimpeadas.Infraestructure.Data.Migrations.DbSeeder>();
+    var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
     await seeder.SeedAsync();
 }
 
