@@ -10,19 +10,20 @@ using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Controllers
 builder.Services.AddControllers().AddJsonOptions(options =>
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-// Configure PostgreSQL DbContext, Repositories, and Security (Infrastructure layer)
+// Infrastructure
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// Configure Application services (AuthService, etc.)
+// Application
 builder.Services.AddApplicationServices();
 
-// Configure JWT Authentication
-var jwtSecretKey = builder.Configuration["JwtSettings:SecretKey"] 
+// JWT
+var jwtSecretKey = builder.Configuration["JwtSettings:SecretKey"]
     ?? throw new InvalidOperationException("JwtSettings:SecretKey no está configurado.");
+
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
 var jwtAudience = builder.Configuration["JwtSettings:Audience"];
 
@@ -35,23 +36,27 @@ builder.Services.AddAuthentication(options =>
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtSecretKey)),
+
         ValidateIssuer = !string.IsNullOrEmpty(jwtIssuer),
         ValidIssuer = jwtIssuer,
+
         ValidateAudience = !string.IsNullOrEmpty(jwtAudience),
         ValidAudience = jwtAudience,
+
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
 });
 
 builder.Services.AddAuthorization();
-/*
- Esto permite que el frontend de React (corriendo en Vite) llame a esta API
-Sin esto, el navegador bloquea los pedidos por política de CORS (el verdadero si no me deci quien sos, no pasas :> esto)*/
+
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendReact", policy =>
@@ -59,8 +64,11 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod());
 });
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+// OpenAPI
 builder.Services.AddOpenApi();
+
+// Swagger
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -79,25 +87,25 @@ builder.Services.AddSwaggerGen(options =>
         BearerFormat = "JWT"
     });
 
-    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
-    {
-        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
-    });
+    options.AddSecurityRequirement(document =>
+        new OpenApiSecurityRequirement
+        {
+            [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+        });
 });
 
 var app = builder.Build();
 
-
+// Seeder
 using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
     await seeder.SeedAsync();
 }
 
-// Configure the HTTP request pipeline.
+// Swagger
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -105,7 +113,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("FrontendReact");
-//UseCors para conservar los headers de CORS en las respuestas, y que el frontend pueda leerlos. Esto es necesario para que el frontend pueda recibir los datos de la API sin problemas de CORS
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
