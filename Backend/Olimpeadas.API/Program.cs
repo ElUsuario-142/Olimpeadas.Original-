@@ -60,7 +60,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendReact", policy =>
-        policy.WithOrigins("http://localhost:5174")
+        policy.WithOrigins("http://localhost:5173", "https://localhost:5173", "http://localhost:5174")
               .AllowAnyHeader()
               .AllowAnyMethod());
 });

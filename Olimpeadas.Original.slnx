@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="Olimpeadas.API/Olimpeadas.API.csproj" />
-  <Project Path="Olimpeadas.Aplication/Olimpeadas.Aplication.csproj" />
-  <Project Path="Olimpeadas.Domain/Olimpeadas.Domain.csproj" />
-  <Project Path="Olimpeadas.Infraestructure/Olimpeadas.Infraestructure.csproj" />
+  <Project Path="Backend/Olimpeadas.API/Olimpeadas.API.csproj" />
+  <Project Path="Backend/Olimpeadas.Aplication/Olimpeadas.Aplication.csproj" />
+  <Project Path="Backend/Olimpeadas.Domain/Olimpeadas.Domain.csproj" />
+  <Project Path="Backend/Olimpeadas.Infraestructure/Olimpeadas.Infraestructure.csproj" />
 </Solution>
