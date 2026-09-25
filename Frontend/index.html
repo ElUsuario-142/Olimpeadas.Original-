@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Agregar el CSS de Leaflet dentro del <head> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="src/style.css" />
+    <title>Municipio de Morón · Portal de reportes</title>
+  </head>
+  <body>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="container header__inner">
+        <a href="#" class="brand">
+          <span class="brand__logo">M</span>
+          <span class="brand__text">
+            <strong>Municipio de Morón</strong>
+            <small>Atención Ciudadana</small>
+          </span>
+        </a>
+<nav class="nav">
+  <a href="#noticias">Noticias</a>
+  <a href="#panorama">Panorama</a>
+  <a href="#emergencias">Emergencias</a>
+  <a href="#reporte" class="btn btn--primary btn--sm">Hacer un reporte</a>
+
+<a href="login.html" class="btn btn--primary btn--sm">Login</a>
+
+  <button id="theme-toggle" class="theme-toggle" type="button">
+    🌙
+  </button>
+</nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <h1>Tu municipio, más cerca.</h1>
+          <p class="hero__lead">
+            Informá problemas en la vía pública de forma simple. El equipo municipal
+            recibirá tu solicitud y podrás seguir su avance.
+          </p>
+          <a href="#reporte" class="btn btn--primary">Reportar un incidente</a>
+          <p class="hero__note">
+            Este canal es para situaciones no urgentes. No necesitás crear una cuenta.
+          </p>
+        </div>
+      </section>
+
+      <!-- Formulario -->
+      <section class="report" id="reporte">
+        <div class="container">
+          <h2>Contanos qué está pasando</h2>
+          <p class="section__lead">
+            Completá los datos que conozcas. Los campos marcados con * son obligatorios.
+          </p>
+
+          <form class="form" id="form-reporte" novalidate>
+            <div class="field">
+              <label for="tipo">Tipo de incidente *</label>
+              <select id="tipo" name="tipo">
+                <option value="" selected disabled>Seleccioná una categoría</option>
+                <option>Bache o calle deteriorada</option>
+                <option>Alumbrado público</option>
+                <option>Recolección de residuos</option>
+                <option>Poda o arbolado</option>
+                <option>Otro</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="ubicacion">Ubicación *</label>
+              <input id="ubicacion" name="ubicacion" type="text" placeholder="Calle, altura o lugar de referencia" />
+            </div>
+
+            <p class="hint">Cuanto más precisa sea la ubicación, más rápido podremos actuar.</p>
+
+            <div class="field">
+              <label for="descripcion">Descripción *</label>
+              <textarea id="descripcion" name="descripcion" rows="4" placeholder="Describí el problema y desde cuándo lo observás"></textarea>
+            </div>
+
+            <label class="upload" for="archivos">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M12 4l-4 4M12 4l4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+              <strong>Adjuntá fotos o videos</strong>
+              <small>JPG, PNG o MP4 · Máximo 15 MB</small>
+              <input id="archivos" name="archivos" type="file" accept=".jpg,.jpeg,.png,.mp4" multiple hidden />
+            </label>
+
+            <div class="form__row">
+              <div class="field">
+                <label for="nombre">Nombre y apellido</label>
+                <input id="nombre" name="nombre" type="text" placeholder="Opcional" />
+              </div>
+              <div class="field">
+                <label for="contacto">Email o teléfono *</label>
+                <input id="contacto" name="contacto" type="text" placeholder="Para avisarte novedades" />
+              </div>
+            </div>
+
+            <label class="check">
+              <input id="acepto" type="checkbox" name="acepto" />
+              <span>
+                Acepto que el Municipio use estos datos únicamente para gestionar este reporte.
+                Tu información está protegida y no será publicada.
+              </span>
+            </label>
+
+            <button type="submit" class="btn btn--primary">Enviar reporte</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Panorama -->
+      <section class="overview" id="panorama">
+        <div class="container overview__inner">
+          <div class="overview__info">
+            <span class="eyebrow">Datos abiertos</span>
+            <h2>Panorama de incidencias</h2>
+            <p class="section__lead">
+              Información orientativa de los últimos 30 días, actualizada diariamente.
+            </p>
+            <dl class="stats">
+              <div id="reportes">Reportes recibidos</div>
+              <div id="resueltos">Resueltos</div>
+            </dl>
+          </div>
+
+          <!-- Contenedor del mapa en la sección #panorama -->
+          <div id="map" class="map" role="img" aria-label="Mapa de incidencias reportadas en Morón"></div>
+        </div>
+      </section>
+
+      <!-- Noticias y Novedades Municipales -->
+      <section class="news" id="noticias">
+        <div class="container">
+          <span class="eyebrow">Información al vecino</span>
+          <h2>Noticias y novedades locales</h2>
+          <p class="section__lead">
+            Mantenete al tanto de las obras, operativos de mantenimiento y avisos de servicios en el municipio.
+          </p>
+
+          <div class="news__grid">
+            <article class="news__card">
+              <!-- aca en el back tmb tienen q fijarse q las noticias aparezcan aca--> 
+            </article>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- CTA final -->
+      <section class="cta">
+        <div class="container cta__inner">
+          <div>
+            <h2>Construyendo juntos el futuro de Morón</h2>
+            <p>Tu aviso puede mejorar la vida cotidiana de todo el barrio.</p>
+          </div>
+          <a href="#reporte" class="btn btn--primary">Hacer un reporte</a>
+        </div>
+      </section>
+    </main>
+    <!-- Barra de emergencia -->
+     <section class="emerg" id="emergencias">
+<div class="topbar">
+  <div class="container topbar__inner">
+    <p>¿Hay riesgo inmediato para una persona o propiedad?</p>
+
+    <a 
+      href="https://www.argentina.gob.ar/tema/emergencias"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Llamá al 911 · SAME 107 · Bomberos 100
+    </a>
+  </div>
+</div>
+</section>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div>
+          <h3>Municipio de Morón</h3>
+          <p>Cerca de cada vecino y vecina Atención ciudadana</p>
+        </div>
+        <div>
+          <h4>Atención</h4>
+          <ul>
+            <li><a href="#reporte">Hacer un reporte</a></li>
+            <li><a href="#emergencias">Emergencias</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Municipio</h4>
+          <ul>
+            <li><a href="#noticias">Noticias</a></li>
+            <li><a href="#panorama">Panorama</a></li>
+            <li><a href="#">Sitio oficial</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contacto</h4>
+          <ul>
+            <li>0800-666-6766</li>
+            <li>atencion@moron.gob.ar</li>
+            <li>Lun a vie · 8 a 18 hs</li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="src/validaciones.js"></script>
+    <!-- Agregar el JS de Leaflet antes de cerrar el </body> -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="src/mapa.js"></script>
+    <script type="module" src="src/tema.js"></script>
+
+
+  </body>
+</html>

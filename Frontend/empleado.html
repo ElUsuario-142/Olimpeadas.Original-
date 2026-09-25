@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="src/style3.css">
+  <title>Portal Empleado - Municipio de Morón</title>
+
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#" class="brand">
+        <span class="brand__logo">M</span>
+        <span class="brand__text">
+          <strong>Municipio de Morón</strong>
+          <small>Panel de Empleado</small>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="#reportes">Reportes Asignados</a>
+        <a href="#noticias">Noticias</a>
+        <span class="user-badge">Empleado: Juan Pérez</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-content">
+
+    <!-- Sección: Reportes Asignados -->
+    <section id="reportes" class="dashboard-section">
+      <div class="section-header">
+        <h2>Reportes Asignados</h2>
+        <p>Gestioná y actualizá los incidentes asignados a tu área.</p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Tarjeta de Reporte 1 -->
+        <article class="card">
+          <div class="card__header">
+            <span class="badge badge--pending">En Proceso</span>
+            <small>ID: #REP-1042</small>
+          </div>
+          <h3>Bache peligroso en Av. Rivadavia 17800</h3>
+          <p class="card__desc">Bache de gran tamaño en carril derecho dificultando el tránsito.</p>
+          
+          <form class="card__form" action="#" method="POST" enctype="multipart/form-data">
+            <div class="field">
+              <label for="estado-1042">Cambiar estado del reporte *</label>
+              <select id="estado-1042" name="estado">
+                <option value="en_proceso" selected>En Proceso</option>
+                <option value="resuelto">Resuelto</option>
+                <option value="rechazado">Rechazado</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="foto-1042">Agregar imágenes del avance / resolución</label>
+              <input type="file" id="foto-1042" accept="image/*" multiple>
+            </div>
+
+            <button type="button" class="btn btn--primary btn--sm">Actualizar Reporte</button>
+          </form>
+        </article>
+
+        <!-- Tarjeta de Reporte 2 -->
+        <article class="card">
+          <div class="card__header">
+            <span class="badge badge--new">Nuevo</span>
+            <small>ID: #REP-1045</small>
+          </div>
+          <h3>Luminaria fuera de servicio</h3>
+          <p class="card__desc">Falta de alumbrado público en la esquina de Pellegrini y Brown.</p>
+          
+          <form class="card__form">
+            <div class="field">
+              <label for="estado-1045">Cambiar estado del reporte *</label>
+              <select id="estado-1045" name="estado">
+                <option value="pendiente" selected>Pendiente</option>
+                <option value="en_proceso">En Proceso</option>
+                <option value="resuelto">Resuelto</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="foto-1045">Agregar imágenes del avance / resolución</label>
+              <input type="file" id="foto-1045" accept="image/*" multiple>
+            </div>
+
+            <button type="button" class="btn btn--primary btn--sm">Actualizar Reporte</button>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <!-- Sección: Noticias municipal -->
+    <section id="noticias" class="dashboard-section">
+      <div class="section-header">
+        <h2>Gestión de Noticias</h2>
+        <p>Publicá novedades informativas sobre operativos o servicios.</p>
+      </div>
+
+      <!-- Formulario Crear Noticia -->
+      <form class="form-box">
+        <h3>Crear nueva noticia</h3>
+        <div class="field">
+          <label for="titulo-noticia">Título *</label>
+          <input type="text" id="titulo-noticia" placeholder="Ej: Operativo de poda en Castelar" required>
+        </div>
+        <div class="field">
+          <label for="cuerpo-noticia">Contenido *</label>
+          <textarea id="cuerpo-noticia" rows="4" placeholder="Escribí el texto de la noticia..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn--primary">Publicar Noticia</button>
+      </form>
+
+      <!-- Listado de Noticias creadas -->
+      <div class="news-list">
+        <h3>Noticias publicadas recientemente</h3>
+        <article class="news-item">
+          <div>
+            <h4>Corte programado por obras en Belgrano</h4>
+            <small>Publicado el 22/09/2026</small>
+          </div>
+          <div class="news-item__actions">
+            <button class="btn btn--secondary btn--sm">Editar (según reglas)</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="src/style4.css">
+  <title>Panel Administrador - Municipio de Morón</title>
+</head>
+<body>
+
+  <header class="header header--admin">
+    <div class="container header__inner">
+      <a href="#" class="brand">
+        <span class="brand__logo">M</span>
+        <span class="brand__text">
+          <strong>Municipio de Morón</strong>
+          <small>Administración Global</small>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="#asignacion">Asignar Reportes</a>
+        <a href="#usuarios">Usuarios</a>
+        <a href="#noticias">Noticias</a>
+        <a href="#config">Configuración</a>
+        <span class="user-badge user-badge--admin">Admin</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container main-content">
+
+    <!-- Sección: Asignación de Reportes a Empleados -->
+    <section id="asignacion" class="dashboard-section">
+      <div class="section-header">
+        <h2>Gestión y Asignación de Reportes</h2>
+        <p>Asigná responsables del equipo municipal a cada reporte entrante[cite: 3].</p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Título / Incidente</th>
+              <th>Estado</th>
+              <th>Empleado Asignado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#REP-1042</td>
+              <td>Bache en Av. Rivadavia 17800</td>
+              <td><span class="badge badge--pending">En Proceso</span></td>
+              <td>
+                <select class="table-select">
+                  <option>Juan Pérez (Obras)</option>
+                  <option>Carlos Gómez (Tránsito)</option>
+                </select>
+              </td>
+              <td>
+                <button class="btn btn--primary btn--sm">Guardar</button>
+              </td>
+            </tr>
+            <tr>
+              <td>#REP-1043</td>
+              <td>Poda urgente en Plaza San Martín</td>
+              <td><span class="badge badge--new">Nuevo</span></td>
+              <td>
+                <select class="table-select">
+                  <option value="" selected>Sin Asignar</option>
+                  <option>María López (Espacios Verdes)</option>
+                </select>
+              </td>
+              <td>
+                <button class="btn btn--primary btn--sm">Asignar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Sección: Administración de Usuarios -->
+    <section id="usuarios" class="dashboard-section">
+      <div class="section-header">
+        <h2>Administrar Usuarios</h2>
+        <p>Alta, baja y gestión de permisos del personal y ciudadanos[cite: 3].</p>
+      </div>
+
+      <div class="grid-2">
+        <form class="form-box">
+          <h3>Crear Usuario</h3>
+          <div class="field">
+            <label for="u-nombre">Nombre y Apellido *</label>
+            <input type="text" id="u-nombre" required>
+          </div>
+          <div class="field">
+            <label for="u-email">Email *</label>
+            <input type="email" id="u-email" required>
+          </div>
+          <div class="field">
+            <label for="u-rol">Rol *</label>
+            <select id="u-rol">
+              <option value="empleado">Empleado</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn--primary">Registrar Usuario</button>
+        </form>
+
+        <div class="form-box">
+          <h3>Lista de Personal</h3>
+          <ul class="admin-list">
+            <li>
+              <span>Juan Pérez (Empleado)</span>
+              <div>
+                <button class="btn btn--secondary btn--sm">Editar</button>
+                <button class="btn btn--danger btn--sm">Eliminar</button>
+              </div>
+            </li>
+            <li>
+              <span>María López (Empleado)</span>
+              <div>
+                <button class="btn btn--secondary btn--sm">Editar</button>
+                <button class="btn btn--danger btn--sm">Eliminar</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección: Noticias (Control total: Crear, Editar, Eliminar) -->
+    <section id="noticias" class="dashboard-section">
+      <div class="section-header">
+        <h2>Administración de Noticias</h2>
+        <p>Control total para publicar, editar o eliminar cualquier noticia[cite: 3].</p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Fecha</th>
+              <th>Autor</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Corte programado por obras en Belgrano</td>
+              <td>22/09/2026</td>
+              <td>Juan Pérez</td>
+              <td>
+                <button class="btn btn--secondary btn--sm">Editar</button>
+                <button class="btn btn--danger btn--sm">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Sección: Configuración (Municipios / Categorías / Contactos) -->
+    <section id="config" class="dashboard-section">
+      <div class="section-header">
+        <h2>Configuración del Sistema</h2>
+        <p>Administración de categorías de incidentes y contactos de alerta[cite: 3].</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-box">
+          <h3>Categorías de Incidentes</h3>
+          <ul class="admin-list">
+            <li><span>Bache o calle deteriorada</span> <button class="btn btn--danger btn--sm">Borrar</button></li>
+            <li><span>Alumbrado público</span> <button class="btn btn--danger btn--sm">Borrar</button></li>
+            <li><span>Poda o arbolado</span> <button class="btn btn--danger btn--sm">Borrar</button></li>
+          </ul>
+          <div class="field" style="margin-top: 1rem;">
+            <input type="text" placeholder="Nueva categoría">
+            <button class="btn btn--primary btn--sm" style="margin-top: 0.5rem;">Agregar Categoría</button>
+          </div>
+        </div>
+
+        <div class="form-box">
+          <h3>Contactos y Alertas de Emergencia</h3>
+          <div class="field">
+            <label>Policía (Actual: 911)</label>
+            <input type="text" value="911">
+          </div>
+          <div class="field">
+            <label>SAME (Actual: 107)</label>
+            <input type="text" value="107">
+          </div>
+          <button class="btn btn--primary btn--sm" style="margin-top: 0.5rem;">Guardar Contactos</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

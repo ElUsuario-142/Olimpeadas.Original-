@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Municipio de Morón - Iniciar sesión</title>
+  <link rel="stylesheet" href="src/style2.css">
+
+  <style>
+  /* MODO OSCURO DEL LOGIN */
+
+  body.dark-mode {
+    background-color: #181818 !important;
+    color: #f2f2f2 !important;
+  }
+
+  body.dark-mode .navbar {
+    background-color: #181818 !important;
+  }
+
+  body.dark-mode .brand__title {
+    color: #f2f2f2 !important;
+  }
+
+  body.dark-mode .brand__subtitle {
+    color: #b5b5b5 !important;
+  }
+
+  body.dark-mode .auth-section h2 {
+    color: #f2f2f2 !important;
+  }
+
+  body.dark-mode .section__lead {
+    color: #b5b5b5 !important;
+  }
+
+  body.dark-mode .form {
+    background-color: #242424 !important;
+    border-color: #3a3a3a !important;
+  }
+
+  body.dark-mode .field label {
+    color: #f2f2f2 !important;
+  }
+
+  body.dark-mode .field input {
+    background-color: #303030 !important;
+    color: #f2f2f2 !important;
+    border-color: #3a3a3a !important;
+  }
+
+  body.dark-mode .field input::placeholder {
+    color: #999999 !important;
+  }
+
+  body.dark-mode .theme-toggle {
+    color: #f2f2f2 !important;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Encabezado / Navbar -->
+  <header class="navbar">
+    <div class="container navbar__content">
+      <div class="brand">
+        <div class="brand__logo">M</div>
+        <div class="brand__text">
+          <span class="brand__title">Municipio de Morón</span>
+          <span class="brand__subtitle">Atención Ciudadana</span>
+        </div>
+      </div>
+<nav class="nav-links">
+  <a href="index.html" class="btn btn--primary">Volver</a>
+
+  <button id="theme-toggle" class="theme-toggle" type="button">
+    🌙
+  </button>
+</nav>
+    </div>
+  </header>
+
+  <!-- Contenido Principal -->
+  <main class="main-content">
+    <div class="container">
+      <section class="auth-section">
+        <h2>Iniciar sesión</h2>
+        <p class="section__lead">
+          Ingresá con tu correo electrónico y contraseña para gestionar tus solicitudes.
+        </p>
+
+        <form class="form" id="loginForm" novalidate>
+          <div class="field">
+            <label for="email">Correo electrónico *</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="ejemplo@correo.com" 
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="password">Contraseña *</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="Ingresá tu contraseña" 
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full">
+            Ingresar
+          </button>
+        </form>
+      </section>
+    </div>
+  </main>
+<script src="src/login.js"></script>
+<script src="src/tema-login.js"></script>
+</body>
+</html>
