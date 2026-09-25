@@ -27,7 +27,7 @@ import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useLocation, use
    CONFIGURACIÓN
 ========================================================= */
 
-const API_URL = import.meta.env.VITE_API_URL || "https://localhost:58432";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:58433";
 
 /* =========================================================
    CSS
