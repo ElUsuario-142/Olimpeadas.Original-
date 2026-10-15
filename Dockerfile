@@ -14,19 +14,22 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0-nanoserver-ltsc2022 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Olimpeadas.Original.csproj", "."]
-RUN dotnet restore "./Olimpeadas.Original.csproj"
+COPY ["Backend/Olimpeadas.API/Olimpeadas.API.csproj", "Backend/Olimpeadas.API/"]
+COPY ["Backend/Olimpeadas.Aplication/Olimpeadas.Aplication.csproj", "Backend/Olimpeadas.Aplication/"]
+COPY ["Backend/Olimpeadas.Domain/Olimpeadas.Domain.csproj", "Backend/Olimpeadas.Domain/"]
+COPY ["Backend/Olimpeadas.Infraestructure/Olimpeadas.Infraestructure.csproj", "Backend/Olimpeadas.Infraestructure/"]
+RUN dotnet restore "Backend/Olimpeadas.API/Olimpeadas.API.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./Olimpeadas.Original.csproj" -c %BUILD_CONFIGURATION% -o /app/build
+WORKDIR "/src/Backend/Olimpeadas.API"
+RUN dotnet build "Olimpeadas.API.csproj" -c %BUILD_CONFIGURATION% -o /app/build
 
 # Esta fase se usa para publicar el proyecto de servicio que se copiará en la fase final.
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Olimpeadas.Original.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Olimpeadas.API.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
 
 # Esta fase se usa en producción o cuando se ejecuta desde VS en modo normal (valor predeterminado cuando no se usa la configuración de depuración)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Olimpeadas.Original.dll"]
+ENTRYPOINT ["dotnet", "Olimpeadas.API.dll"]

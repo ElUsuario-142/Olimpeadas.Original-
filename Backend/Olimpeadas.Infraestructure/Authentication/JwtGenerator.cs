@@ -23,7 +23,10 @@ namespace Olimpeadas.Infraestructure.Authentication
                 ?? throw new InvalidOperationException("JwtSettings:SecretKey no está configurado.");
             var issuer = _configuration["JwtSettings:Issuer"];
             var audience = _configuration["JwtSettings:Audience"];
-            var durationInMinutes = int.Parse(_configuration["JwtSettings:DurationInMinutes"] ?? "120");
+            var durationInMinutes = 120;
+            var durationRaw = _configuration["JwtSettings:DurationInMinutes"];
+            if (!string.IsNullOrWhiteSpace(durationRaw) && !int.TryParse(durationRaw, out durationInMinutes))
+                throw new InvalidOperationException("JwtSettings:DurationInMinutes no es un número válido.");
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

@@ -1,9 +1,11 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Olimpeadas.API.Extensions;
 using Olimpeadas.Aplication.DTOs.Auth;
 using Olimpeadas.Aplication.DTOs.Usuario;
 using Olimpeadas.Aplication.Interfaces;
+using Olimpeadas.Domain.Interfaces;
 
 namespace Olimpeadas.API.Controllers
 {
@@ -12,10 +14,12 @@ namespace Olimpeadas.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUsuarioRepository usuarioRepository)
         {
             _authService = authService;
+            _usuarioRepository = usuarioRepository;
         }
 
         [HttpPost("login")]
@@ -35,23 +39,22 @@ namespace Olimpeadas.API.Controllers
 
         [Authorize]
         [HttpGet("perfil")]
-        public IActionResult ObtenerPerfilAutenticado()
+        public async Task<IActionResult> ObtenerPerfilAutenticado()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var email = User.FindFirstValue(ClaimTypes.Email);
-            var nombre = User.FindFirstValue(ClaimTypes.Name);
-            var rol = User.FindFirstValue(ClaimTypes.Role);
-            var municipioId = User.FindFirstValue("municipioId");
-            var dni = User.FindFirstValue("dni");
+            var usuario = await _usuarioRepository.GetByIdAsync(User.GetUserId())
+                ?? throw new KeyNotFoundException("Usuario no encontrado.");
 
             return Ok(new
             {
-                id = userId,
-                nombre,
-                email,
-                rol,
-                municipioId,
-                dni
+                id = usuario.Id,
+                nombre = usuario.Nombre,
+                apellido = usuario.Apellido,
+                email = usuario.Email,
+                dni = usuario.DNI,
+                rol = usuario.Rol.ToString(),
+                municipioId = usuario.MunicipioId,
+                telefono = usuario.Telefono,
+                activo = usuario.Activo
             });
         }
     }

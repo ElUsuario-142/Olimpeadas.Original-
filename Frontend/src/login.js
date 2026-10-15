@@ -96,20 +96,41 @@ document.addEventListener("DOMContentLoaded", () => {
       submitBtn.disabled = true;
       submitBtn.textContent = "Ingresando...";
 
-      // Datos listos para enviar al backend
+      // Datos listos para enviar al backend (LoginDTO: { email, contraseña })
       const datosLogin = {
         email: emailInput.value.trim(),
-        password: passwordInput.value,
-        recordar: document.getElementById("remember")?.checked || false,
+        contraseña: passwordInput.value,
       };
 
-      console.log("Datos de login listos para backend:", datosLogin);
+      const API_BASE = "http://localhost:58433";
+      const respuesta = await fetch(`${API_BASE}/api/Auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datosLogin),
+      });
 
-      // TODO: Aquí va tu llamada fetch/axios a la API
-      // await apiLogin(datosLogin);
+      if (!respuesta.ok) {
+        let mensaje = "Credenciales inválidas.";
+        try {
+          const problema = await respuesta.json();
+          mensaje = problema.detail || problema.title || mensaje;
+        } catch {
+          /* mantiene mensaje genérico */
+        }
+        mostrarError(passwordInput, mensaje);
+        return;
+      }
+
+      const sesion = await respuesta.json();
+      if (sesion?.token || sesion?.Token) {
+        localStorage.setItem("ol_token", sesion.token || sesion.Token);
+      }
+
+      window.location.href = "index.html";
 
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
+      mostrarError(passwordInput, "No se pudo conectar con el servidor. Verificá que la API esté en ejecución.");
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = textoOriginal;

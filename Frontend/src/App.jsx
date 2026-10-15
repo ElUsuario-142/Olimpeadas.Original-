@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useParams } from "react-router-dom";
 
 /*
   OLIMPEADAS - FRONTEND COMPLETO EN UN SOLO ARCHIVO
@@ -870,7 +870,7 @@ async function apiRequest(path, options = {}) {
   if (response.status === 204) return null;
 
   const text = await response.text();
-  let data = null;
+  let data;
 
   try {
     data = text ? JSON.parse(text) : null;
@@ -1739,7 +1739,7 @@ function Registro() {
 
         <div className="field">
           <label>DNI</label>
-          <input name="dni" value={form.dni} onChange={change} required pattern="\\d{7,8}" />
+          <input name="dni" value={form.dni} onChange={change} required pattern="\d{7,8}" />
         </div>
 
         <div className="field">
@@ -2018,19 +2018,17 @@ function Panel() {
 
 function EmpleadoPanel() {
   const [reportes, setReportes] = useState([]);
-  const [noticias, setNoticias] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   async function load() {
     try {
       setLoading(true);
-      const [reports, news] = await Promise.all([
+      const [reports] = await Promise.all([
         api.reportesAsignados(),
         api.noticias(),
       ]);
       setReportes(reports || []);
-      setNoticias(news || []);
     } catch (err) {
       setError(err.message);
     } finally {

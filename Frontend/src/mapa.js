@@ -1,6 +1,11 @@
+/* global L */
 document.addEventListener("DOMContentLoaded", () => {
   const mapElement = document.getElementById("map");
   if (!mapElement) return;
+  if (typeof L === "undefined") {
+    console.error("Leaflet (L) no está cargado. Revisá el <script> de Leaflet en index.html.");
+    return;
+  }
 
   // 1. Inicializar el mapa centrado en Morón (-34.6534, -58.6198) con zoom 13
   const map = L.map("map").setView([-34.6534, -58.6198], 13);

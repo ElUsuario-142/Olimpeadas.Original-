@@ -1,6 +1,6 @@
 // Constantes y expresiones regulares
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const TELEFONO_REGEX = /^[0-9\s\+\-\(\)]{7,15}$/;
+const TELEFONO_REGEX = /^[0-9\s+\-()]{7,15}$/;
 
 // Simulación de verificación de calles oficial de Morón
 export async function validarCalleMoron(ubicacion) {
@@ -23,20 +23,23 @@ export function validarCampo(nombre, valores) {
   const valor = valores[nombre];
 
   switch (nombre) {
-    case "tipo":
+    case "tipo": {
       if (!valor) return "Seleccioná un tipo de incidente.";
       break;
+    }
 
-    case "ubicacion":
+    case "ubicacion": {
       if (!valor || !valor.trim()) return "Ingresá la ubicación del problema.";
       break;
+    }
 
-    case "descripcion":
+    case "descripcion": {
       if (!valor || !valor.trim()) return "Ingresá una descripción de la situación.";
       if (valor.trim().length < 10) return "La descripción debe tener al menos 10 caracteres.";
       break;
+    }
 
-    case "contacto":
+    case "contacto": {
       if (!valor || !valor.trim()) return "Ingresá un correo electrónico o teléfono de contacto.";
       const esEmail = EMAIL_REGEX.test(valor.trim());
       const esTelefono = TELEFONO_REGEX.test(valor.trim());
@@ -44,12 +47,14 @@ export function validarCampo(nombre, valores) {
         return "Ingresá un email válido (ej: nombre@correo.com) o un teléfono.";
       }
       break;
+    }
 
-    case "acepto":
+    case "acepto": {
       if (!valor) return "Debes aceptar los términos para enviar el reporte.";
       break;
+    }
 
-    case "archivos":
+    case "archivos": {
       if (valor && valor.length > 0) {
         const pesoMaximo = 15 * 1024 * 1024; // 15 MB
         for (let i = 0; i < valor.length; i++) {
@@ -59,6 +64,7 @@ export function validarCampo(nombre, valores) {
         }
       }
       break;
+    }
 
     default:
       break;
